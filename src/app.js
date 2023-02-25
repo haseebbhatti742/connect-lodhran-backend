@@ -34,8 +34,8 @@ app.use(passport.initialize());
 passport.use("jwt", jwtStrategy);
 
 // v1 api routes
-app.use("/v1", routes);
-app.use("/v1/test", async (req, res) => {
+app.use("/api/v1", routes);
+app.use("/api/v1/test", async (req, res) => {
   res.send(`Server is successfully up`);
 });
 
