@@ -5,26 +5,34 @@ const bcrypt = require("bcryptjs");
 const StaffSchema = mongoose.Schema(
   {
     //common fields
-    name: {
+    fullname: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "Full Name is required"],
     },
     email: {
       type: String,
       required: [true, "Email is required"],
     },
+    password: {
+      type: String,
+      required: [true, "Password is required"]
+    },
+    cnic: {
+      type: String,
+      required: [true, "CNIC is required"],
+    },
     mobile: {
       type: String,
       required: [true, "Mobile is required"],
+    },
+    address: {
+      type: String,
+      required: [true, "Address is required"],
     },
     type: {
       type: String,
       required: [true, "Type is required"],
       enum: ['superadmin', 'admin', 'staff']
-    },
-    password: {
-      type: String,
-      required: [true, "Password is required"]
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

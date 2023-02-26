@@ -5,22 +5,33 @@ const bcrypt = require("bcryptjs");
 const UserSchema = mongoose.Schema(
   {
     //common fields
-    name: {
+    fullname: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "Full Name is required"],
     },
-    email: {
+    userId: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, "User Id is required"],
     },
-    password: { type: String },
+    cnic: {
+      type: String,
+      required: [true, "CNIC is required"],
+    },
+    mobile: {
+      type: String,
+      required: [true, "Mobile is required"],
+    },
+    address: {
+      type: String,
+      required: [true, "Address is required"],
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Staff",
     },
     updatedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Staff",
     },
   },
   {
@@ -31,24 +42,6 @@ const UserSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 UserSchema.plugin(toJSON);
 UserSchema.plugin(paginate);
-
-/**
- * Check if password matches the User's password
- * @param {string} password
- * @returns {Promise<boolean>}
- */
-UserSchema.methods.isPasswordMatch = async function (password) {
-  const User = this;
-  return bcrypt.compare(password, User.password);
-};
-
-UserSchema.pre("save", async function (next) {
-  const User = this;
-  if (User.isModified("password")) {
-    User.password = await bcrypt.hash(User.password, 8);
-  }
-  next();
-});
 
 /**
  * @typedef User

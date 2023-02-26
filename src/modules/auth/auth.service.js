@@ -1,6 +1,3 @@
-const StaffModel = require("../staff/staff.model");
-const { generatePassword } = require("../../utils/helpers");
-const { sendNewPasswordEmail } = require("../../services/email.service");
 const staffService = require("../staff/staff.service");
 const ApiError = require("../../utils/ApiError");
 const httpStatus = require("http-status");
@@ -15,7 +12,7 @@ let authService = {};
 authService.loginStaffWithEmailAndPassword = async (email, password) => {
   const staff = await staffService.getStaffByEmail(email);
   if (!staff) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Staff not registered");
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Incorrect Email");
   } else {
     const isPasswordMatch = await bcrypt.compare(password, staff.password);
     if (!isPasswordMatch) {

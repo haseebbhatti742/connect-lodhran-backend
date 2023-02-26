@@ -12,7 +12,23 @@ const password = (value, helpers) => {
   return value;
 };
 
+const cnic = (cnic) => {
+  if (!cnic.match(/^\d{13}$/)) {
+    return helpers.message('CNIC must be 14 digit (without dash)');
+  }
+  return cnic;
+}
+
+const mobile = (mobile) => {
+  if (!mobile.match(/^92(3)\d{10}$/)) {
+    return helpers.message('Invalid mobile number');
+  }
+  return mobile;
+}
+
 module.exports = {
   objectId,
   password,
+  cnic,
+  mobile
 };

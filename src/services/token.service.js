@@ -98,7 +98,7 @@ const generateAuthTokens = async (user) => {
     tokenTypes.REFRESH
   );
 
-  return {
+  const obj = {
     access: {
       token: accessToken,
       expires: accessTokenExpires.toDate(),
@@ -108,6 +108,8 @@ const generateAuthTokens = async (user) => {
       expires: refreshTokenExpires.toDate(),
     },
   };
+
+  return obj
 };
 
 /**

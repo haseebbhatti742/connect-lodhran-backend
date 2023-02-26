@@ -1,4 +1,3 @@
-const httpStatus = require("http-status");
 const { tokenService, authService } = require("../../services");
 const catchAsync = require("../../utils/catchAsync");
 

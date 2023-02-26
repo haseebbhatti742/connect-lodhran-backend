@@ -16,7 +16,9 @@ router
   );
 
 router
-  .route("/:userId")
-  .get(auth(), validate(userValidation.getUser), userController.getUser);
+  .route("/:id")
+  .get(auth(), validate(userValidation.getUser), userController.getUser)
+  .patch(auth(), validate(userValidation.updateUser), userController.updateUserById)
+  .delete(auth(), validate(userValidation.getUser), userController.deleteUserById);
 
 module.exports = router;

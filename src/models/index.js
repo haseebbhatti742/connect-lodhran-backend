@@ -1,5 +1,5 @@
 module.exports.Token = require("./token.model");
 module.exports.UserModel = require("../modules/user/user.model");
 module.exports.StaffModel = require("../modules/staff/staff.model");
-module.exports.CategoryModel = require("../modules/category/category.model");
-module.exports.CarModel = require("../modules/car/car.model");
+module.exports.PackageModel = require("../modules/package/package.model");
+module.exports.CarModel = require("../modules/isp/isp.model");

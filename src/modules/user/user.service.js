@@ -9,11 +9,11 @@ let userService = {};
  * @returns {Promise<UserModel>}
  */
 userService.createUser = async (UserBody) => {
-  const isUser = await UserModel.find({ email: UserBody.email });
+  const isUser = await UserModel.findOne({ userId: UserBody.userId });
   if (isUser) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "User already exists with email"
+      "User id already exists"
     );
   } else {
     return UserModel.create(UserBody);
@@ -21,12 +21,21 @@ userService.createUser = async (UserBody) => {
 };
 
 /**
- * Get User buy email
- * @param {string} email
+ * Get User by user by Id
+ * @param {ObjectId} id
  * @returns {Promise<UserModel>}
  */
-userService.getUserByEmail = async (email) => {
-  return UserModel.findOne({ email: email });
+userService.getUserById = async (id) => {
+  return UserModel.findById(id)
+};
+
+/**
+ * Get User by user by userId
+ * @param {String} userId
+ * @returns {Promise<UserModel>}
+ */
+userService.getUserByUserId = async (userId) => {
+  return UserModel.findOne({ userId })
 };
 
 /**
@@ -38,12 +47,23 @@ userService.getAllUsers = async () => {
 };
 
 /**
- * Get User By Id
+ * Update User By Id
  * @param {ObjectId} id
+ * @param {Object} updateBody
  * @returns {Promise<UserModel>}
  */
-userService.getUserById = async (id) => {
-  return UserModel.findById(id);
+userService.updateUserById = async (id, updateBody) => {
+  await UserModel.updateOne({ _id: id }, updateBody);
+  return "User Updated";
+};
+
+/**
+ * Delete User By Id
+ * @param {ObjectId} id
+ */
+userService.deleteUserById = async (id) => {
+  await UserModel.deleteOne({ _id: id });
+  return "User Deleted";
 };
 
 module.exports = userService;

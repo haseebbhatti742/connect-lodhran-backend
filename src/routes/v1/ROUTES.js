@@ -1,13 +1,18 @@
 const userRoute = require("../../modules/user/user.route");
 const staffRoute = require("../../modules/staff/staff.route");
 const authRoute = require("../../modules/auth/auth.route");
-const categoryRoute = require("../../modules/category/category.route");
-const carRoute = require("../../modules/car/car.route");
+const packageRoute = require("../../modules/package/package.route");
+const ispRoute = require("../../modules/isp/isp.route");
+const entryRoute = require("../../modules/entry/entry.route");
 
 const ROUTES = [
   {
     path: "/auth",
     route: authRoute,
+  },
+  {
+    path: "/isp",
+    route: ispRoute,
   },
   {
     path: "/user",
@@ -18,12 +23,12 @@ const ROUTES = [
     route: staffRoute,
   },
   {
-    path: "/category",
-    route: categoryRoute,
+    path: "/package",
+    route: packageRoute,
   },
   {
-    path: "/car",
-    route: carRoute,
+    path: "/entry",
+    route: entryRoute,
   },
 ];
 

@@ -11,7 +11,7 @@ staffController.createStaff = catchAsync(async (req, res) => {
 
 staffController.getAllStaffs = catchAsync(async (req, res) => {
   const staffs = await staffService.getAllStaffs();
-  if (!staffs) {
+  if (!staffs || staffs.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, "No Staffs");
   }
   res.send(staffs);

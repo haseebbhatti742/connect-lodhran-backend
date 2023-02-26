@@ -1,14 +1,17 @@
 const Joi = require("joi");
-const { objectId } = require("../../validations/custom.validation");
+const { objectId, cnic, mobile } = require("../../validations/custom.validation");
 let staffValidation = {};
 
 staffValidation.createStaff = {
   body: Joi.object().keys({
-    name: Joi.string().required("Name is required"),
+    fullname: Joi.string().required("Full Name is required"),
     email: Joi.string().required("Email is requried").email(),
-    mobile: Joi.string().required("Mobile is required"),
+    password: Joi.string().required("Password is requried"),
+    cnic: Joi.string().required("Mobile is required").custom(cnic),
+    mobile: Joi.string().required("Mobile is required").custom(mobile),
+    address: Joi.string().required("Password is required"),
     type: Joi.string().required("Type is required"),
-    password: Joi.string().required("Password is required"),
+    sendWelcomeMessage: Joi.boolean().required()
   }),
 };
 
@@ -27,11 +30,13 @@ staffValidation.updateStaff = {
     id: Joi.string().required("Staff Id is required").custom(objectId)
   }),
   body: Joi.object().keys({
-    name: Joi.string().required("Name is required"),
+    fullname: Joi.string().required("Full Name is required"),
     email: Joi.string().required("Email is requried").email(),
-    mobile: Joi.string().required("Mobile is required"),
+    password: Joi.string().required("Password is requried"),
+    cnic: Joi.string().required("Mobile is required").custom(cnic),
+    mobile: Joi.string().required("Mobile is required").custom(mobile),
+    address: Joi.string().required("Password is required"),
     type: Joi.string().required("Type is required"),
-    password: Joi.string().required("Password is required"),
   }),
 };
 

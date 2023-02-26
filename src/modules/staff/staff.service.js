@@ -35,7 +35,7 @@ staffService.getStaffByEmail = async (email) => {
  * @returns {Promise<StaffModel>}
  */
 staffService.getAllStaffs = async () => {
-  return StaffModel.find({});
+  return StaffModel.find({ type: { $ne: "superadmin" } });
 };
 
 /**

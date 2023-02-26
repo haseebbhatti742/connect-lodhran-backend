@@ -11,7 +11,7 @@ userController.createUser = catchAsync(async (req, res) => {
 
 userController.getAllUsers = catchAsync(async (req, res) => {
   const users = await userService.getAllUsers();
-  if (!users) {
+  if (!users || users.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, "No Users");
   }
   res.send(users);
@@ -23,6 +23,33 @@ userController.getUser = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   res.send(user);
+});
+
+userController.updateUserById = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(
+    req?.params?.id
+  );
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User Not Found");
+  else {
+    const User = await userService.updateUserById(
+      req?.params?.id,
+      req?.body
+    );
+    res.send(User);
+  }
+});
+
+userController.deleteUserById = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(
+    req?.params?.id
+  );
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User Not Found");
+  else {
+    const User = await userService.deleteUserById(
+      req?.params?.id
+    );
+    res.send(User);
+  }
 });
 
 module.exports = userController;
