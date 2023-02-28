@@ -1,4 +1,5 @@
-const IspModel = require("./isp.model");
+const { IspModel } = require("../../models");
+
 let ispService = {};
 
 /**
