@@ -12,6 +12,10 @@ const IspSchema = mongoose.Schema(
       type: Number,
       required: [true, "Isp VLAN is required"],
     },
+    openingBalance: {
+      type: Number,
+      required: [true, "Opening Balance is required"],
+    },
     color: {
       type: String,
       required: [true, "Isp Color is required"],

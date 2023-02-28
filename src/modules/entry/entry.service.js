@@ -17,7 +17,7 @@ entryService.createEntry = async (EntryBody) => {
  * @returns {Promise<EntryModel>}
  */
 entryService.getAlCompletedlEntries = async () => {
-  return EntryModel.find({ paymentMethod: { $ne: 'pending' } }).populate('isp').populate('package');
+  return EntryModel.find({ paymentMethod: { $ne: 'pending' } }).populate('isp').populate('package')
 };
 
 /**

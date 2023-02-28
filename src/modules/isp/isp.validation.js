@@ -6,6 +6,7 @@ ispValidation.createIsp = {
   body: Joi.object().keys({
     name: Joi.string().required("Name is requried"),
     vlan: Joi.number().min(0).required("Vlan is required"),
+    openingBalance: Joi.number().min(0).required("Opening Balance is required"),
     color: Joi.string().required("Color is required"),
   }),
 };
@@ -28,6 +29,7 @@ ispValidation.updateIsp = {
     body: Joi.object().keys({
       name: Joi.string().required("Name is requried"),
       vlan: Joi.number().min(0).required("Vlan is required"),
+      openingBalance: Joi.number().min(0).required("Opening Balance is required"),
       color: Joi.string().required("Color is required"),
     }),
   }),
