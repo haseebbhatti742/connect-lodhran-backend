@@ -8,23 +8,36 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(auth(), validate(entryValidation.createEntry), entryController.createEntry)
+  .post(
+    auth(),
+    validate(entryValidation.createEntry),
+    entryController.createEntry
+  )
   .get(
     auth(),
     validate(entryValidation.getAlCompletedlEntries),
     entryController.getAlCompletedlEntries
   );
 
-router.get("/pending",
+router.get(
+  "/pending",
   auth(),
   validate(entryValidation.getAlPendingEntries),
   entryController.getAlPendinglEntries
 );
 
-// router
-//   .route("/:id")
-//   .get(auth(), validate(entryValidation.getEntry), entryController.getEntry)
-//   .patch(auth(), validate(entryValidation.updateEntry), entryController.updateEntryById)
+router
+  .route("/:id")
+  .get(
+    auth(),
+    validate(entryValidation.getEntryById),
+    entryController.getEntryById
+  )
+  .patch(
+    auth(),
+    validate(entryValidation.updateEntry),
+    entryController.updateEntryById
+  );
 //   .delete(auth(), validate(entryValidation.getEntry), entryController.deleteEntryById);
 
 module.exports = router;

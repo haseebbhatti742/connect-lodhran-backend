@@ -17,7 +17,9 @@ entryService.createEntry = async (EntryBody) => {
  * @returns {Promise<EntryModel>}
  */
 entryService.getAlCompletedlEntries = async () => {
-  return EntryModel.find({ paymentMethod: { $ne: 'pending' } }).populate('isp').populate('package')
+  return EntryModel.find({ paymentMethod: { $ne: "pending" } })
+    .populate("isp")
+    .populate("package");
 };
 
 /**
@@ -25,28 +27,30 @@ entryService.getAlCompletedlEntries = async () => {
  * @returns {Promise<EntryModel>}
  */
 entryService.getAlPendinglEntries = async () => {
-  return EntryModel.find({ paymentMethod: 'pending' }).populate('isp').populate('package');
+  return EntryModel.find({ paymentMethod: "pending" })
+    .populate("isp")
+    .populate("package");
 };
 
-// /**
-//  * Get Entry by entry by Id
-//  * @param {ObjectId} id
-//  * @returns {Promise<EntryModel>}
-//  */
-// entryService.getEntryById = async (id) => {
-//   return EntryModel.findById(id)
-// };
+/**
+ * Get Entry by entry by Id
+ * @param {ObjectId} id
+ * @returns {Promise<EntryModel>}
+ */
+entryService.getEntryById = async (id) => {
+  return EntryModel.findById(id).populate("isp").populate("package");
+};
 
-// /**
-//  * Update Entry By Id
-//  * @param {ObjectId} id
-//  * @param {Object} updateBody
-//  * @returns {Promise<EntryModel>}
-//  */
-// entryService.updateEntryById = async (id, updateBody) => {
-//   await EntryModel.updateOne({ _id: id }, updateBody);
-//   return "Entry Updated";
-// };
+/**
+ * Update Entry By Id
+ * @param {ObjectId} id
+ * @param {Object} updateBody
+ * @returns {Promise<EntryModel>}
+ */
+entryService.updateEntryById = async (id, updateBody) => {
+  await EntryModel.updateOne({ _id: id }, updateBody);
+  return "Entry Updated";
+};
 
 // /**
 //  * Delete Entry By Id

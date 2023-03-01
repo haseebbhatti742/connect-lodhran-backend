@@ -17,7 +17,7 @@ packageService.createPackage = async (PackageBody) => {
  * @returns {Promise<PackageModel>}
  */
 packageService.getAllPackages = async () => {
-  return PackageModel.find({})
+  return PackageModel.find({});
 };
 
 /**
@@ -26,7 +26,7 @@ packageService.getAllPackages = async () => {
  * @returns {Promise<PackageModel>}
  */
 packageService.getPackageById = async (id) => {
-  return PackageModel.findById(id);
+  return PackageModel.findById(id).populate("isp");
 };
 
 /**
@@ -35,7 +35,7 @@ packageService.getPackageById = async (id) => {
  * @returns {Promise<PackageModel>}
  */
 packageService.getPackageByIsp = async (isp) => {
-  return PackageModel.find({ isp }).populate('isp');
+  return PackageModel.find({ isp }).populate("isp");
 };
 
 /**

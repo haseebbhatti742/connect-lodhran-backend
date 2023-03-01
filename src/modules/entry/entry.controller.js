@@ -1,14 +1,24 @@
 const httpStatus = require("http-status");
 const ApiError = require("../../utils/ApiError");
 const catchAsync = require("../../utils/catchAsync");
-const { entryService, userService } = require("../../services");
+const {
+  entryService,
+  userService,
+  packageService,
+  ispService,
+} = require("../../services");
 let entryController = {};
 
 entryController.createEntry = catchAsync(async (req, res) => {
   const isUser = await userService.getUserByUserId(req.body.userId);
-  if (!isUser) throw new ApiError(httpStatus.NOT_FOUND, "User Not Found")
+  if (!isUser) throw new ApiError(httpStatus.NOT_FOUND, "User Not Found");
   else {
     const entry = await entryService.createEntry(req.body);
+    const Package = await packageService.getPackageById(req.body.package);
+    console.log(Package);
+    await ispService.updateIspById(Package?.isp?.id, {
+      openingBalance: Package?.isp?.openingBalance - Package?.purchaseRate,
+    });
     res.status(httpStatus.CREATED).send(entry);
   }
 });
@@ -29,27 +39,25 @@ entryController.getAlPendinglEntries = catchAsync(async (req, res) => {
   res.send(entries);
 });
 
-// entryController.getEntry = catchAsync(async (req, res) => {
-//   const entry = await entryService.getEntryById(req.params.entryId);
-//   if (!entry) {
-//     throw new ApiError(httpStatus.NOT_FOUND, "Entry not found");
-//   }
-//   res.send(entry);
-// });
+entryController.getEntryById = catchAsync(async (req, res) => {
+  const entry = await entryService.getEntryById(req.params.id);
+  if (!entry) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Entry not found");
+  }
+  res.send(entry);
+});
 
-// entryController.updateEntryById = catchAsync(async (req, res) => {
-//   const entry = await entryService.getEntryById(
-//     req?.params?.id
-//   );
-//   if (!entry) throw new ApiError(httpStatus.NOT_FOUND, "Entry Not Found");
-//   else {
-//     const Entry = await entryService.updateEntryById(
-//       req?.params?.id,
-//       req?.body
-//     );
-//     res.send(Entry);
-//   }
-// });
+entryController.updateEntryById = catchAsync(async (req, res) => {
+  const entry = await entryService.getEntryById(req?.params?.id);
+  if (!entry) throw new ApiError(httpStatus.NOT_FOUND, "Entry Not Found");
+  else {
+    const Entry = await entryService.updateEntryById(
+      req?.params?.id,
+      req?.body
+    );
+    res.send(Entry);
+  }
+});
 
 // entryController.deleteEntryById = catchAsync(async (req, res) => {
 //   const entry = await entryService.getEntryById(
