@@ -15,7 +15,11 @@ entryValidation.createEntry = {
 };
 
 entryValidation.getAlCompletedlEntries = {
-  query: Joi.object().keys({}),
+  body: Joi.object().keys({
+    startDate: Joi.date().required("Start Date is required"),
+    endDate: Joi.date().required("End Date is required").allow(""),
+    isp: Joi.string().custom(objectId).required("ISP is required"),
+  }),
 };
 
 entryValidation.getAlPendingEntries = {

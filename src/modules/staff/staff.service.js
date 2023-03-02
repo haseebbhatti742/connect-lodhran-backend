@@ -10,7 +10,6 @@ let staffService = {};
  */
 staffService.createStaff = async (StaffBody) => {
   const isStaff = await StaffModel.findOne({ email: StaffBody.email });
-  console.log(isStaff)
   if (isStaff && isStaff.mobile === StaffBody.mobile) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,

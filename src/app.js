@@ -8,7 +8,10 @@ const httpStatus = require("http-status");
 const { jwtStrategy } = require("./config/passport");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middlewares/error");
+const cron = require("node-cron");
+const moment = require("moment");
 const ApiError = require("./utils/ApiError");
+const { sendEmail } = require("./services/email.service");
 
 const app = express();
 
@@ -42,6 +45,14 @@ app.use("/api/v1/test", async (req, res) => {
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
+});
+
+cron.schedule("0 0 12 * * *", () => {
+  sendEmail(
+    "haseebbhatti742@gmail.com",
+    "Cron Job Date Reminder",
+    "The Time is " + moment(new Date()).format("DD-MM-YYYY")
+  );
 });
 
 // convert error to ApiError, if needed

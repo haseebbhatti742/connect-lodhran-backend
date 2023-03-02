@@ -2,11 +2,19 @@ const httpStatus = require("http-status");
 const ApiError = require("../../utils/ApiError");
 const catchAsync = require("../../utils/catchAsync");
 const { userService } = require("../../services");
+const { sendEmail } = require("../../services/email.service");
 let userController = {};
 
 userController.createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  if (user) {
+    sendEmail(
+      user?.email,
+      "Registration Successfull",
+      "Welcome to Connect Communications Lodhran family"
+    );
+    res.status(httpStatus.CREATED).send(user);
+  }
 });
 
 userController.getAllUsers = catchAsync(async (req, res) => {
@@ -26,28 +34,19 @@ userController.getUser = catchAsync(async (req, res) => {
 });
 
 userController.updateUserById = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(
-    req?.params?.id
-  );
+  const user = await userService.getUserById(req?.params?.id);
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User Not Found");
   else {
-    const User = await userService.updateUserById(
-      req?.params?.id,
-      req?.body
-    );
+    const User = await userService.updateUserById(req?.params?.id, req?.body);
     res.send(User);
   }
 });
 
 userController.deleteUserById = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(
-    req?.params?.id
-  );
+  const user = await userService.getUserById(req?.params?.id);
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User Not Found");
   else {
-    const User = await userService.deleteUserById(
-      req?.params?.id
-    );
+    const User = await userService.deleteUserById(req?.params?.id);
     res.send(User);
   }
 });

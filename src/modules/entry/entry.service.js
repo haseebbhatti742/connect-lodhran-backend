@@ -14,10 +14,20 @@ entryService.createEntry = async (EntryBody) => {
 
 /**
  * Get All Completed Entries
+ * @param {String} startDate
+ * @param {String} endDate
+ * @param {ObjectId} EntryBody
  * @returns {Promise<EntryModel>}
  */
-entryService.getAlCompletedlEntries = async () => {
-  return EntryModel.find({ paymentMethod: { $ne: "pending" } })
+entryService.getAlCompletedlEntries = async (startDate, endDate, isp) => {
+  return await EntryModel.find({
+    paymentMethod: { $ne: "pending" },
+    isp,
+    createdAt:
+      endDate === ""
+        ? { $gte: new Date(startDate) }
+        : { $gte: new Date(startDate), $lte: new Date(endDate) },
+  })
     .populate("isp")
     .populate("package");
 };
@@ -27,7 +37,7 @@ entryService.getAlCompletedlEntries = async () => {
  * @returns {Promise<EntryModel>}
  */
 entryService.getAlPendinglEntries = async () => {
-  return EntryModel.find({ paymentMethod: "pending" })
+  return await EntryModel.find({ paymentMethod: "pending" })
     .populate("isp")
     .populate("package");
 };
@@ -38,7 +48,7 @@ entryService.getAlPendinglEntries = async () => {
  * @returns {Promise<EntryModel>}
  */
 entryService.getEntryById = async (id) => {
-  return EntryModel.findById(id).populate("isp").populate("package");
+  return await EntryModel.findById(id).populate("isp").populate("package");
 };
 
 /**

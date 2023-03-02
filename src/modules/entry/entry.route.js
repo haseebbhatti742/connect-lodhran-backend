@@ -12,12 +12,14 @@ router
     auth(),
     validate(entryValidation.createEntry),
     entryController.createEntry
-  )
-  .get(
-    auth(),
-    validate(entryValidation.getAlCompletedlEntries),
-    entryController.getAlCompletedlEntries
   );
+
+router.post(
+  "/completed",
+  auth(),
+  validate(entryValidation.getAlCompletedlEntries),
+  entryController.getAlCompletedlEntries
+);
 
 router.get(
   "/pending",

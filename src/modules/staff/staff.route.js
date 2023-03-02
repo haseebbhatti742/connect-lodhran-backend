@@ -8,7 +8,11 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(auth(), validate(staffValidation.createStaff), staffController.createStaff)
+  .post(
+    auth(),
+    validate(staffValidation.createStaff),
+    staffController.createStaff
+  )
   .get(
     auth(),
     validate(staffValidation.getAllStaff),
@@ -17,6 +21,10 @@ router
 
 router
   .route("/:id")
-  .get(auth(), validate(staffValidation.getStaffById), staffController.getStaff);
+  .get(
+    auth(),
+    validate(staffValidation.getStaffById),
+    staffController.getStaff
+  );
 
 module.exports = router;

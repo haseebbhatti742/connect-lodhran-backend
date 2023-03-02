@@ -15,7 +15,6 @@ entryController.createEntry = catchAsync(async (req, res) => {
   else {
     const entry = await entryService.createEntry(req.body);
     const Package = await packageService.getPackageById(req.body.package);
-    console.log(Package);
     await ispService.updateIspById(Package?.isp?.id, {
       openingBalance: Package?.isp?.openingBalance - Package?.purchaseRate,
     });
@@ -24,11 +23,18 @@ entryController.createEntry = catchAsync(async (req, res) => {
 });
 
 entryController.getAlCompletedlEntries = catchAsync(async (req, res) => {
-  const entries = await entryService.getAlCompletedlEntries();
+  const entries = await entryService.getAlCompletedlEntries(
+    req?.body?.startDate,
+    req?.body?.endDate,
+    req?.body?.isp
+  );
   if (!entries || entries.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, "No Completed Entries");
   }
-  res.send(entries);
+  res.send({
+    entries,
+    total: entries.reduce((acc, item) => (acc += +item?.saleRate), 0),
+  });
 });
 
 entryController.getAlPendinglEntries = catchAsync(async (req, res) => {
