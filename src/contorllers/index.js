@@ -4,3 +4,4 @@ module.exports.authController = require("../modules/auth/auth.controller");
 module.exports.packageController = require("../modules/package/package.controller");
 module.exports.ispController = require("../modules/isp/isp.controller");
 module.exports.entryController = require("../modules/entry/entry.controller");
+module.exports.invoiceController = require("../modules/invoice/invoice.controller");

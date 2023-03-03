@@ -4,6 +4,7 @@ const authRoute = require("../../modules/auth/auth.route");
 const packageRoute = require("../../modules/package/package.route");
 const ispRoute = require("../../modules/isp/isp.route");
 const entryRoute = require("../../modules/entry/entry.route");
+const invoiceRoute = require("../../modules/invoice/invoice.route");
 
 const ROUTES = [
   {
@@ -29,6 +30,10 @@ const ROUTES = [
   {
     path: "/entry",
     route: entryRoute,
+  },
+  {
+    path: "/invoice",
+    route: invoiceRoute,
   },
 ];
 
