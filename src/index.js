@@ -8,6 +8,9 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   server = app.listen(config.port, () => {
     console.log(`Listening to port ${config.port}`);
   });
+}).catch(e => {
+  console.log("MongoDB Connection Error");
+  console.log(e);
 });
 
 const exitHandler = () => {
