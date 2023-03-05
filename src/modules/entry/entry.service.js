@@ -21,11 +21,10 @@ entryService.createEntry = async (EntryBody) => {
  */
 entryService.getAlCompletedlEntries = async (startDate, endDate, isp) => {
   return await EntryModel.find({
-    paymentMethod: { $ne: "pending" },
     isp,
-    createdAt:
-      endDate === ""
-        ? { $gte: new Date(startDate) }
+    entryDate:
+      endDate === "" || startDate === endDate
+        ? new Date(startDate) 
         : { $gte: new Date(startDate), $lte: new Date(endDate) },
   })
     .populate("isp")

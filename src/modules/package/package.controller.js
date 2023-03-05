@@ -55,12 +55,12 @@ packageController.deletePackageById = catchAsync(async (req, res) => {
   const package = await packageService.getPackageById(
     req?.params?.id
   );
-  if (!package) throw new ApiError(httpStatus.NOT_FOUND, "Packages Not Found");
+  if (!package) throw new ApiError(httpStatus.NOT_FOUND, "Package Not Found");
   else {
-    const Packages = await packageService.deletePackageById(
+    const Package = await packageService.deletePackageById(
       req?.params?.id
     );
-    res.send(Packages);
+    res.send(Package);
   }
 });
 

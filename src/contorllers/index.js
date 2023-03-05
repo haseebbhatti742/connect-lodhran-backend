@@ -5,3 +5,4 @@ module.exports.packageController = require("../modules/package/package.controlle
 module.exports.ispController = require("../modules/isp/isp.controller");
 module.exports.entryController = require("../modules/entry/entry.controller");
 module.exports.invoiceController = require("../modules/invoice/invoice.controller");
+module.exports.expenseController = require("../modules/expense/expense.controller");

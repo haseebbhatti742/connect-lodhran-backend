@@ -1,6 +1,7 @@
 const httpStatus = require("http-status");
 const StaffModel = require("./staff.model");
 const ApiError = require("../../utils/ApiError");
+const { STAFF_TYPES } = require("../../utils/Constants");
 let staffService = {};
 
 /**
@@ -38,12 +39,29 @@ staffService.getAllStaffs = async () => {
 };
 
 /**
+ * Get All Staffs
+ * @param {String} type
+ * @returns {Promise<StaffModel>}
+ */
+staffService.getStaffsByType = async (type) => {
+  return StaffModel.find({ type });
+};
+
+/**
  * Get Staff By Id
  * @param {ObjectId} id
  * @returns {Promise<StaffModel>}
  */
 staffService.getStaffById = async (id) => {
   return StaffModel.findById(id);
+};
+
+/**
+ * Get All Partners
+ * @returns {Promise<StaffModel>}
+ */
+staffService.getAllPartner = async () => {
+  return StaffModel.find({ type: { $in: [STAFF_TYPES.admin, STAFF_TYPES.partner] } })
 };
 
 module.exports = staffService;

@@ -4,12 +4,14 @@ let entryValidation = {};
 
 entryValidation.createEntry = {
   body: Joi.object().keys({
+    entryDate: Joi.date().required(),
     isp: Joi.string().required().custom(objectId),
     userId: Joi.string().required(),
     package: Joi.string().required().custom(objectId),
     paymentMethod: Joi.string().required(),
     tid: Joi.string().allow(""),
     saleRate: Joi.number().required(),
+    startDate: Joi.date().required(),
     expiryDate: Joi.date().required(),
   }),
 };
@@ -37,12 +39,14 @@ entryValidation.updateEntry = {
     id: Joi.string().custom(objectId),
   }),
   body: Joi.object().keys({
+    entryDate: Joi.date().required(),
     isp: Joi.string().required().custom(objectId),
     userId: Joi.string().required(),
     package: Joi.string().required().custom(objectId),
     paymentMethod: Joi.string().required(),
     tid: Joi.string().allow(""),
     saleRate: Joi.number().required(),
+    startDate: Joi.date().required(),
     expiryDate: Joi.date().required(),
   }),
 };

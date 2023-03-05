@@ -7,9 +7,9 @@ invoiceValidation.createInvoice = {
     isp: Joi.string().required().custom(objectId),
     date: Joi.date().required(),
     paymentMethod: Joi.string().required(),
-    tid: Joi.string().required(),
+    tid: Joi.string().allow(''),
     amount: Joi.number().required(),
-    comments: Joi.string().required(),
+    comments: Joi.string().allow(''),
   }),
 };
 
@@ -35,9 +35,9 @@ invoiceValidation.updateInvoice = {
     isp: Joi.string().required().custom(objectId),
     date: Joi.date().required(),
     paymentMethod: Joi.string().required(),
-    tid: Joi.string().required(),
+    tid: Joi.string().allow(''),
     amount: Joi.number().required(),
-    comments: Joi.string().required(),
+    comments: Joi.string().allow(''),
   }),
 };
 

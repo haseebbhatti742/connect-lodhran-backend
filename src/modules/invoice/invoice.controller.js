@@ -10,7 +10,7 @@ invoiceController.createInvoice = catchAsync(async (req, res) => {
   else {
     const invoice = await invoiceService.createInvoice(req.body);
     await ispService.updateIspById(isIsp?.id, {
-      openingBalance: isIsp?.openingBalance - req?.body?.amount,
+      openingBalance: isIsp?.openingBalance + req?.body?.amount,
     });
     res.status(httpStatus.CREATED).send(invoice);
   }

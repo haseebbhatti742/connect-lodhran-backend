@@ -5,6 +5,7 @@ const packageRoute = require("../../modules/package/package.route");
 const ispRoute = require("../../modules/isp/isp.route");
 const entryRoute = require("../../modules/entry/entry.route");
 const invoiceRoute = require("../../modules/invoice/invoice.route");
+const expenseRoute = require("../../modules/expense/expense.route");
 
 const ROUTES = [
   {
@@ -35,6 +36,10 @@ const ROUTES = [
     path: "/invoice",
     route: invoiceRoute,
   },
+  {
+    path: '/expense',
+    route: expenseRoute
+  }
 ];
 
 module.exports = ROUTES;

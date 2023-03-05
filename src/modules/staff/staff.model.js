@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("../../models/plugins");
 const bcrypt = require("bcryptjs");
+const { STAFF_TYPES } = require('../../utils/Constants')
 
 const StaffSchema = mongoose.Schema(
   {
@@ -32,7 +33,11 @@ const StaffSchema = mongoose.Schema(
     type: {
       type: String,
       required: [true, "Type is required"],
-      enum: ['superadmin', 'admin', 'staff']
+      enum: [STAFF_TYPES.admin, STAFF_TYPES.partner, STAFF_TYPES.staff]
+    },
+    share: {
+      type: Number,
+      required: [this.type === STAFF_TYPES.partner || this.type === STAFF_TYPES.admin ? true: false,"Share is required when type is partner"]
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

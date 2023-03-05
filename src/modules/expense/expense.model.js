@@ -1,17 +1,12 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("../../models/plugins");
 
-const EntrySchema = mongoose.Schema(
+const ExpenseSchema = mongoose.Schema(
   {
     //common fields
-    isp: {
+    staff: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Isp",
-      required: [true, "Isp is required"],
-    },
-    date: {
-      type: Date,
-      required: [true, "Date is required"],
+      ref: "Staff",
     },
     paymentMethod: {
       type: String,
@@ -24,8 +19,17 @@ const EntrySchema = mongoose.Schema(
       type: Number,
       required: [true, "Amount is required"],
     },
-    comments: {
+    date: {
+      type: Date,
+      required: [true, "Date is required"],
+    },
+    details: {
       type: String,
+      required: [true, "Details are required"],
+    },
+    status: {
+      type: String,
+      required: [true, "Status is required"],
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -42,12 +46,12 @@ const EntrySchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-EntrySchema.plugin(toJSON);
-EntrySchema.plugin(paginate);
+ExpenseSchema.plugin(toJSON);
+ExpenseSchema.plugin(paginate);
 
 /**
- * @typedef Invoice
+ * @typedef Expense
  */
-const Invoice = mongoose.model("Invoice", EntrySchema);
+const Expense = mongoose.model("Expense", ExpenseSchema);
 
-module.exports = Invoice;
+module.exports = Expense;

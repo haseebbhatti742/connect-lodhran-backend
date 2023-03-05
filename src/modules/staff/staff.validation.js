@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const { STAFF_TYPES } = require("../../utils/Constants");
 const { objectId, cnic, mobile } = require("../../validations/custom.validation");
 let staffValidation = {};
 
@@ -11,6 +12,13 @@ staffValidation.createStaff = {
     mobile: Joi.string().required("Mobile is required").custom(mobile),
     address: Joi.string().required("Password is required"),
     type: Joi.string().required("Type is required"),
+    share: Joi.number().when("type", {
+      is: STAFF_TYPES.partner || STAFF_TYPES.admin,
+      then: Joi.number().required().messages({
+        "any.required": "Share is required when type is partner"
+      }),
+      otherwise: Joi.number()
+    }),
     sendWelcomeMessage: Joi.boolean().required()
   }),
 };
@@ -37,6 +45,13 @@ staffValidation.updateStaff = {
     mobile: Joi.string().required("Mobile is required").custom(mobile),
     address: Joi.string().required("Password is required"),
     type: Joi.string().required("Type is required"),
+    share: Joi.number().when("type", {
+      is: STAFF_TYPES.partner || STAFF_TYPES.admin,
+      then: Joi.number().required().messages({
+        "any.required": "Share is required when type is partner"
+      }),
+      otherwise: Joi.number()
+    }),
   }),
 };
 

@@ -33,7 +33,7 @@ router
   )
   .delete(
     auth(),
-    validate(packageValidation.getPackage),
+    validate(packageValidation.getPackageById),
     packageController.deletePackageById
   );
 

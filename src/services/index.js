@@ -7,3 +7,4 @@ module.exports.packageService = require("../modules/package/package.service");
 module.exports.ispService = require("../modules/isp/isp.service");
 module.exports.entryService = require("../modules/entry/entry.service");
 module.exports.invoiceService = require("../modules/invoice/invoice.service");
+module.exports.expenseService = require("../modules/expense/expense.service");

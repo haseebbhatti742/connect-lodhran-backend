@@ -1,3 +1,5 @@
+const { PAYMENT_METHODS } = require("./Constants");
+
 const generatePassword = () => {
   const charset =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -8,6 +10,11 @@ const generatePassword = () => {
   return password;
 };
 
+const getPaymentMethodNameByKey = (key) => {
+  return PAYMENT_METHODS.find((item) => item.key === key).value;
+};
+
 module.exports = {
   generatePassword,
+  getPaymentMethodNameByKey
 };

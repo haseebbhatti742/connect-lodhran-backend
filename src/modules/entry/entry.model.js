@@ -4,6 +4,10 @@ const { toJSON, paginate } = require("../../models/plugins");
 const EntrySchema = mongoose.Schema(
   {
     //common fields
+    entryDate: {
+      type: Date,
+      required: [true, "Entry Date is required"]
+    },
     isp: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Isp",
@@ -28,6 +32,10 @@ const EntrySchema = mongoose.Schema(
     saleRate: {
       type: Number,
       required: [true, "Sale Rate is required"]
+    },
+    startDate: {
+      type: Date,
+      required: [true, "Start Date is required"]
     },
     expiryDate: {
       type: Date,

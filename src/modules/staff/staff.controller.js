@@ -2,11 +2,25 @@ const httpStatus = require("http-status");
 const ApiError = require("../../utils/ApiError");
 const catchAsync = require("../../utils/catchAsync");
 const { staffService } = require("../../services");
+const { STAFF_TYPES } = require("../../utils/Constants");
 let staffController = {};
 
 staffController.createStaff = catchAsync(async (req, res) => {
-  const staff = await staffService.createStaff(req.body);
-  res.status(httpStatus.CREATED).send(staff);
+  console.log(req?.body)
+  const partners = await staffService.getAllPartner();
+  if(req?.body.type === STAFF_TYPES.staff) {
+    const staff = await staffService.createStaff(req.body);
+    res.status(httpStatus.CREATED).send(staff);
+  } else {
+    const allPartnersShare = partners.reduce((acc, partner) => acc+= +partner?.share, 0);
+    console.log(allPartnersShare)
+    if(allPartnersShare + req?.body?.share > 100) {
+      throw new ApiError(httpStatus.NOT_ACCEPTABLE, `Max share limit remaining is ${100-allPartnersShare}`);
+    } else {
+      const staff = await staffService.createStaff(req.body);
+      res.status(httpStatus.CREATED).send(staff);
+    }
+  }
 });
 
 staffController.getAllStaffs = catchAsync(async (req, res) => {
