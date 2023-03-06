@@ -8,30 +8,60 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(auth(), validate(expenseValidation.createExpense), expenseController.createExpense)
+  .post(
+    auth(),
+    validate(expenseValidation.createExpense),
+    expenseController.createExpense
+  );
 
-router.post("/completed", 
+router.post(
+  "/completed",
   auth(),
   validate(expenseValidation.getAllExpenses),
   expenseController.getCompletedExpenses
 );
 
-router.get("/pending", 
+router.get(
+  "/pending",
   auth(),
   validate(expenseValidation.getAllExpenses),
   expenseController.getPendingExpenses
 );
 
-router.get("/approve/:id", 
+router.get(
+  "/approve/:id",
   auth(),
   validate(expenseValidation.getExpenseById),
   expenseController.approveExpense
 );
 
+router.get(
+  "/admin-approve/:id",
+  validate(expenseValidation.getExpenseById),
+  expenseController.approveExpenseByAdmin
+);
+
+router.get(
+  "/admin-decline/:id",
+  validate(expenseValidation.getExpenseById),
+  expenseController.declineExpenseByAdmin
+);
+
 router
   .route("/:id")
-  .get(auth(), validate(expenseValidation.getExpenseById), expenseController.getExpenseById)
-  .patch(auth(), validate(expenseValidation.updateExpense), expenseController.updateExpenseById)
-  .delete(auth(), validate(expenseValidation.getExpenseById), expenseController.deleteExpenseById);
+  .get(
+    validate(expenseValidation.getExpenseById),
+    expenseController.getExpenseById
+  )
+  .patch(
+    auth(),
+    validate(expenseValidation.updateExpense),
+    expenseController.updateExpenseById
+  )
+  .delete(
+    auth(),
+    validate(expenseValidation.getExpenseById),
+    expenseController.deleteExpenseById
+  );
 
 module.exports = router;

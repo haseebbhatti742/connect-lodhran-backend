@@ -12,12 +12,12 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendEmail = (to, subject, text) => {
+const sendEmail = (to, subject, html) => {
   const message = {
     from: process.env.SMTP_USER,
     to,
     subject,
-    text,
+    html,
   };
 
   transport.sendMail(message, (error, info) => {

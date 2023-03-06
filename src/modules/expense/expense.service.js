@@ -17,7 +17,7 @@ expenseService.createExpense = async (ExpenseBody) => {
  * @returns {Promise<ExpenseModel>}
  */
 expenseService.getExpenseById = async (id) => {
-  return ExpenseModel.findById(id).populate('staff')
+  return ExpenseModel.findById(id).populate("staff");
 };
 
 /**
@@ -30,9 +30,11 @@ expenseService.getAllExpenses = async (startDate, endDate) => {
   return ExpenseModel.find({
     date:
       endDate === "" || startDate === endDate
-        ? new Date(startDate) 
-        : { $gte: new Date(startDate), $lte: new Date(endDate) }
-  }).sort({date: 1}).populate('staff');
+        ? new Date(startDate)
+        : { $gte: new Date(startDate), $lte: new Date(endDate) },
+  })
+    .sort({ date: 1 })
+    .populate("staff");
 };
 
 /**
@@ -41,7 +43,7 @@ expenseService.getAllExpenses = async (startDate, endDate) => {
  * @returns {Promise<ExpenseModel>}
  */
 expenseService.getAllExpensesByStatus = async (status) => {
-  return ExpenseModel.find({status}).populate('staff');
+  return ExpenseModel.find({ status }).populate("staff");
 };
 
 /**
@@ -51,7 +53,7 @@ expenseService.getAllExpensesByStatus = async (status) => {
  * @returns {Promise<ExpenseModel>}
  */
 expenseService.updateExpenseById = async (id, updateBody) => {
-  await ExpenseModel.updateOne({ _id: id }, updateBody);
+  await ExpenseModel.updateOne({ _id: id }, updateBody).populate("staff");
   return "Expense Updated";
 };
 
@@ -60,7 +62,7 @@ expenseService.updateExpenseById = async (id, updateBody) => {
  * @param {ObjectId} id
  */
 expenseService.deleteExpenseById = async (id) => {
-  await ExpenseModel.deleteOne({ _id: id });
+  await ExpenseModel.deleteOne({ _id: id }).populate("staff");
   return "Expense Deleted";
 };
 

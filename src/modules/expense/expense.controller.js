@@ -9,7 +9,7 @@ let expenseController = {};
 
 expenseController.createExpense = catchAsync(async (req, res) => {
   const admin = await staffService.getStaffsByType(STAFF_TYPES.admin);
-  if (!admin) {
+  if (!admin || admin.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, "Admin not found");
   } else {
     let newExpense = req?.body;
@@ -32,16 +32,22 @@ expenseController.createExpense = catchAsync(async (req, res) => {
     }
     const expense = await expenseService.createExpense(newExpense);
     if (expense) {
+      const approveLink = `<a href="${process.env.BASE_URL}/expense/admin-approve/${expense?.id}">Click Here</a>`;
+      const declineLink = `<a href="${process.env.BASE_URL}/expense/admin-decline/${expense?.id}">Click Here</a>`;
       sendEmail(
         admin[0]?.email,
         "New Expense Added",
-        `A new expense of ${expense?.amount} is added by ${req?.user?.fullname}.
-        \nDetails: ${expense?.details}
-        \nDate: ${expense?.date}
-        \nTime: ${expense?.time}
-        \nPayment Method: ${getPaymentMethodNameByKey(expense?.paymentMethod)}
-        \nTID: ${expense?.tid}
-        \nStatus: ${newExpense?.status}`
+        `<html><body><p>A new expense of ${expense?.amount} is added by ${
+          req?.user?.fullname
+        }.
+        <br>Details: ${expense?.details}
+        <br>Date: ${expense?.date}
+        <br>Payment Method: ${getPaymentMethodNameByKey(expense?.paymentMethod)}
+        <br>TID: ${expense?.tid}
+        <br>Status: ${newExpense?.status}
+        <br>Actions
+        <br>Approve: ${approveLink}
+        <br>Decline: ${declineLink}</p></body></html>`
       );
       res.status(httpStatus.CREATED).send(expense);
     } else {
@@ -110,6 +116,54 @@ expenseController.approveExpense = catchAsync(async (req, res) => {
       status: "completed",
     });
     res.send(Expense);
+  }
+});
+
+expenseController.approveExpenseByAdmin = catchAsync(async (req, res) => {
+  const expense = await expenseService.getExpenseById(req?.params?.id);
+  if (!expense || expense?.status !== "pending") res.send("Expense Not Found");
+  else {
+    const Expense = await expenseService.updateExpenseById(req?.params?.id, {
+      status: "completed",
+    });
+    if (Expense) {
+      sendEmail(
+        expense?.staff?.email,
+        "Expense Approved",
+        `<html><body><p>The expense you added was approved by Admin.
+        <br>Details: ${expense?.details}
+        <br>Amount: ${expense?.amount}
+        <br>Date: ${expense?.date}
+        <br>Payment Method: ${getPaymentMethodNameByKey(expense?.paymentMethod)}
+        <br>TID: ${expense?.tid}</p></body></html>`
+      );
+      res.send("Expense Approved");
+    } else {
+      res.send("Something went wrong");
+    }
+  }
+});
+
+expenseController.declineExpenseByAdmin = catchAsync(async (req, res) => {
+  const expense = await expenseService.getExpenseById(req?.params?.id);
+  if (!expense || expense?.status !== "pending") res.send("Expense Not Found");
+  else {
+    const Expense = await expenseService.deleteExpenseById(req?.params?.id);
+    if (Expense) {
+      sendEmail(
+        expense?.staff?.email,
+        "Expense Declined",
+        `<html><body><p>The expense you added was declined by Admin.
+        <br>Details: ${expense?.details}
+        <br>Amount: ${expense?.amount}
+        <br>Date: ${expense?.date}
+        <br>Payment Method: ${getPaymentMethodNameByKey(expense?.paymentMethod)}
+        <br>TID: ${expense?.tid}</p></body></html>`
+      );
+      res.send("Expense Declined");
+    } else {
+      res.send("Something went wrong");
+    }
   }
 });
 
