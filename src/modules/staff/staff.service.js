@@ -17,7 +17,7 @@ staffService.createStaff = async (StaffBody) => {
       "Staff already exists with email/mobile"
     );
   } else {
-    return StaffModel.create(StaffBody);
+    return await StaffModel.create(StaffBody);
   }
 };
 
@@ -27,7 +27,7 @@ staffService.createStaff = async (StaffBody) => {
  * @returns {Promise<StaffModel>}
  */
 staffService.getStaffByEmail = async (email) => {
-  return StaffModel.findOne({ email: email });
+  return await StaffModel.findOne({ email: email });
 };
 
 /**
@@ -35,7 +35,7 @@ staffService.getStaffByEmail = async (email) => {
  * @returns {Promise<StaffModel>}
  */
 staffService.getAllStaffs = async () => {
-  return StaffModel.find({ type: { $ne: "superadmin" } });
+  return await StaffModel.find({ type: { $ne: "superadmin" } });
 };
 
 /**
@@ -44,7 +44,7 @@ staffService.getAllStaffs = async () => {
  * @returns {Promise<StaffModel>}
  */
 staffService.getStaffsByType = async (type) => {
-  return StaffModel.find({ type });
+  return await StaffModel.find({ type });
 };
 
 /**
@@ -53,15 +53,17 @@ staffService.getStaffsByType = async (type) => {
  * @returns {Promise<StaffModel>}
  */
 staffService.getStaffById = async (id) => {
-  return StaffModel.findById(id);
+  return await StaffModel.findById(id);
 };
 
 /**
  * Get All Partners
  * @returns {Promise<StaffModel>}
  */
-staffService.getAllPartner = async () => {
-  return StaffModel.find({ type: { $in: [STAFF_TYPES.admin, STAFF_TYPES.partner] } })
+staffService.getAllPartners = async () => {
+  return await StaffModel.find({
+    type: { $in: [STAFF_TYPES.admin, STAFF_TYPES.partner] },
+  });
 };
 
 module.exports = staffService;

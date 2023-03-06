@@ -9,25 +9,29 @@ let expenseController = {};
 
 expenseController.createExpense = catchAsync(async (req, res) => {
   const admin = await staffService.getStaffsByType(STAFF_TYPES.admin);
-  if(!admin) {
+  if (!admin) {
     throw new ApiError(httpStatus.NOT_FOUND, "Admin not found");
   } else {
     let newExpense = req?.body;
-    if(req?.user?.type !== STAFF_TYPES.admin && req?.body?.amount > 999 && req?.body?.paymentMethod !== 'meezan_bank'){
+    if (
+      req?.user?.type !== STAFF_TYPES.admin &&
+      req?.body?.amount > 999 &&
+      req?.body?.paymentMethod !== "meezan_bank"
+    ) {
       newExpense = {
         ...newExpense,
         staff: req?.user?.id,
-        status: 'pending'
-      }
+        status: "pending",
+      };
     } else {
       newExpense = {
         ...newExpense,
         staff: req?.user?.id,
-        status: 'completed'
-      }
+        status: "completed",
+      };
     }
     const expense = await expenseService.createExpense(newExpense);
-    if(expense) {
+    if (expense) {
       sendEmail(
         admin[0]?.email,
         "New Expense Added",
@@ -57,27 +61,54 @@ expenseController.getAllExpenses = catchAsync(async (req, res) => {
 expenseController.getCompletedExpenses = catchAsync(async (req, res) => {
   const expenses = await expenseService.getAllExpenses(
     req?.body?.startDate,
-    req?.body?.endDate,
+    req?.body?.endDate
   );
   if (!expenses || expenses.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, "No Completed Expenses Yet");
   }
-  res.send({expenses, total: expenses.reduce((acc, item) => (acc += item?.status === 'completed' ? +item?.amount : 0), 0),});
+
+  const newExpenses = await Promise.all(
+    expenses.map(async (expense) => {
+      if (expense?.spentBy !== "company") {
+        const spentBy = await staffService.getStaffById(expense?.spentBy);
+        return {
+          ...expense._doc,
+          spentBy,
+        };
+      } else {
+        return expense;
+      }
+    })
+  );
+
+  res.send({
+    expenses: newExpenses,
+    total: expenses.reduce(
+      (acc, item) => (acc += item?.status === "completed" ? +item?.amount : 0),
+      0
+    ),
+  });
 });
 
 expenseController.getPendingExpenses = catchAsync(async (req, res) => {
-  const expenses = await expenseService.getAllExpensesByStatus('pending');
+  const expenses = await expenseService.getAllExpensesByStatus("pending");
   if (!expenses || expenses.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, "No Pending Expenses Yet");
   }
-  res.send({expenses, total: expenses.reduce((acc, item) => (acc += +item?.amount), 0),});
+  res.send({
+    expenses,
+    total: expenses.reduce((acc, item) => (acc += +item?.amount), 0),
+  });
 });
 
 expenseController.approveExpense = catchAsync(async (req, res) => {
   const expense = await expenseService.getExpenseById(req?.params?.id);
-  if (!expense || expense?.status !== 'pending') throw new ApiError(httpStatus.NOT_FOUND, "Expense Not Found");
+  if (!expense || expense?.status !== "pending")
+    throw new ApiError(httpStatus.NOT_FOUND, "Expense Not Found");
   else {
-    const Expense = await expenseService.updateExpenseById(req?.params?.id, {status: 'completed'});
+    const Expense = await expenseService.updateExpenseById(req?.params?.id, {
+      status: "completed",
+    });
     res.send(Expense);
   }
 });
@@ -94,7 +125,10 @@ expenseController.updateExpenseById = catchAsync(async (req, res) => {
   const expense = await expenseService.getExpenseById(req?.params?.id);
   if (!expense) throw new ApiError(httpStatus.NOT_FOUND, "Expense Not Found");
   else {
-    const Expense = await expenseService.updateExpenseById(req?.params?.id, req?.body);
+    const Expense = await expenseService.updateExpenseById(
+      req?.params?.id,
+      req?.body
+    );
     res.send(Expense);
   }
 });

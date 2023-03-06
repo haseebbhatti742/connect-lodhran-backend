@@ -8,6 +8,10 @@ const ExpenseSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Staff",
     },
+    spentBy: {
+      type: String,
+      required: [true, "Spent By is required"],
+    },
     paymentMethod: {
       type: String,
       required: [true, "Payment Method is required"],

@@ -19,6 +19,13 @@ router
     staffController.getAllStaffs
   );
 
+router.get(
+  "/getAllPartners",
+  auth(),
+  validate(staffValidation.getAllStaff),
+  staffController.getAllPartners
+);
+
 router
   .route("/:id")
   .get(
