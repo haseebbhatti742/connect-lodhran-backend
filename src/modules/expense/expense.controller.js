@@ -32,8 +32,8 @@ expenseController.createExpense = catchAsync(async (req, res) => {
     }
     const expense = await expenseService.createExpense(newExpense);
     if (expense) {
-      const approveLink = `<a href="${process.env.BASE_URL}/expense/admin-approve/${expense?.id}">Click Here</a>`;
-      const declineLink = `<a href="${process.env.BASE_URL}/expense/admin-decline/${expense?.id}">Click Here</a>`;
+      const approveLink = `<a href="${process.env.BASE_URL}/expense/admin-approve/${expense?.id}"><button style="background-color: green; color:white; padding:20px; border:0px solid white; border-radius:10px; margin-right: 40px">Approve</button></a>`;
+      const declineLink = `<a href="${process.env.BASE_URL}/expense/admin-decline/${expense?.id}"><button style="background-color: red; color:white; padding:20px; border:0px solid white; border-radius:10px">Decline</button></a>`;
       sendEmail(
         admin[0]?.email,
         "New Expense Added",
@@ -45,9 +45,7 @@ expenseController.createExpense = catchAsync(async (req, res) => {
         <br>Payment Method: ${getPaymentMethodNameByKey(expense?.paymentMethod)}
         <br>TID: ${expense?.tid}
         <br>Status: ${newExpense?.status}
-        <br>Actions
-        <br>Approve: ${approveLink}
-        <br>Decline: ${declineLink}</p></body></html>`
+        <br>${approveLink} &nbsp;${declineLink}</p></body></html>`
       );
       res.status(httpStatus.CREATED).send(expense);
     } else {
