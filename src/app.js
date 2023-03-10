@@ -47,11 +47,17 @@ app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 
-cron.schedule("0 0 12 * * *", () => {
+cron.schedule("0 16 * * *", () => {
   sendEmail(
     "haseebbhatti742@gmail.com",
-    "Cron Job Date Reminder",
-    "The Time is " + moment(new Date()).format("DD-MM-YYYY")
+    "Scheduled Email from Connect Communication lodhran",
+    "This Scheduled Email from Connect Communication lodhran"
+  );
+
+  sendEmail(
+    "sheikhzain01@gmail.com",
+    "Scheduled Email from Connect Communication lodhran",
+    "This Scheduled Email from Connect Communication lodhran"
   );
 });
 
