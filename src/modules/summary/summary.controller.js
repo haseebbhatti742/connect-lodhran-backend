@@ -12,9 +12,9 @@ summaryController.getSummary = catchAsync(async (req, res) => {
   if (month && year) {
     const dateFrom = new Date(year, month - 1, 1);
     const dateTo = new Date(year, month, 0);
-    const data = await summaryService.getSummaryByIsp(dateFrom, dateTo);
+    const ispsData = await summaryService.getSummaryByIsp(dateFrom, dateTo);
 
-    const totalIncome = data.reduce(
+    const totalIncome = ispsData.reduce(
       (acc, item) => (acc += +item?.totalProfit),
       0
     );
@@ -24,21 +24,36 @@ summaryController.getSummary = catchAsync(async (req, res) => {
       dateTo
     );
 
-    const partnersExpense = await summaryService.getPartnerEpxense(
+    const partnersTotalExpense = await summaryService.getPartnersTotalEpxense(
       dateFrom,
       dateTo
     );
 
     const companyProfit = totalIncome - companyExpense;
-    const totalRemainingProfit = companyProfit - partnersExpense;
+    const totalRemainingProfit = companyProfit - partnersTotalExpense;
+
+    const partnersExpenses = await summaryService.getPartnersEpxenses(
+      dateFrom,
+      dateTo,
+      companyProfit
+    );
+
+    const totalPendingEntries =
+      await entryService.getAlPendinglEntriesBetweenDate(dateFrom, dateTo);
+    const totalPendingAmount = totalPendingEntries.reduce(
+      (acc, item) => (acc += +item?.package?.saleRate),
+      0
+    );
 
     res.send({
-      data,
+      ispsData,
       totalIncome,
       companyExpense,
       companyProfit,
-      partnersExpense,
+      partnersTotalExpense,
       totalRemainingProfit,
+      partnersExpenses,
+      totalPendingAmount,
     });
   } else {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid Month or Year");
@@ -53,8 +68,8 @@ summaryController.sendEmailsForTomorrowExpiry = async () => {
     const vlan = item?.entry?.isp?.vlan;
     const date = moment(item?.entry?.expiryDate).format("DD-MMM-YYYY");
     const email = item?.user?.email;
-    const html = getEmailFormatForPackageExpiry(name, userid, vlan, email);
-    sendEmail(email, "Package Expires Tomorrow", html);
+    const html = getEmailFormatForPackageExpiry(name, userid, vlan, date);
+    email && sendEmail(email, "Package Expires Tomorrow", html);
   });
 };
 

@@ -48,8 +48,14 @@ app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 
-cron.schedule("0 47 18 * * *", () => {
+cron.schedule("0 20 1 * * *", () => {
   summaryController.sendEmailsForTomorrowExpiry();
+  sendEmail(
+    "haseebbhatti742@gmail.com",
+    "Connect Server Status",
+    "Hi Haseeb! Just to inform you that Connect Communications Lodhran server is running peacefully. Thank you",
+    true
+  );
 });
 
 // convert error to ApiError, if needed

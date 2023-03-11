@@ -12,10 +12,11 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendEmail = (to, subject, html) => {
+const sendEmail = (to, subject, html, ccc) => {
   const message = {
     from: process.env.SMTP_USER,
     to,
+    cc: ccc ? "connectlodhran@gmail.com" : "",
     subject,
     html,
   };

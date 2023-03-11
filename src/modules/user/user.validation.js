@@ -9,7 +9,7 @@ let userValidation = {};
 userValidation.createUser = {
   body: Joi.object().keys({
     fullname: Joi.string().required(),
-    email: Joi.string().email(),
+    email: Joi.string().email().allow(""),
     userId: Joi.string().required(),
     cnic: Joi.string().required().custom(cnic),
     mobile: Joi.string().required().custom(mobile),
@@ -34,7 +34,7 @@ userValidation.updateUser = {
   }),
   body: Joi.object().keys({
     fullname: Joi.string(),
-    email: Joi.string().email(),
+    email: Joi.string().email().allow(""),
     userId: Joi.string(),
     cnic: Joi.string().custom(cnic),
     mobile: Joi.string().custom(mobile),

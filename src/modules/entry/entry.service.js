@@ -44,6 +44,19 @@ entryService.getAlPendinglEntries = async () => {
 };
 
 /**
+ * Get All Pending Entries
+ * @returns {Promise<EntryModel>}
+ */
+entryService.getAlPendinglEntriesBetweenDate = async (dateFrom, dateTo) => {
+  return await EntryModel.find({
+    paymentMethod: "pending",
+    entryDate: { $gte: new Date(dateFrom), $lte: new Date(dateTo) },
+  })
+    .populate("isp")
+    .populate("package");
+};
+
+/**
  * Get Entry by entry by Id
  * @param {ObjectId} id
  * @returns {Promise<EntryModel>}

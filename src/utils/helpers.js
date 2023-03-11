@@ -15,22 +15,67 @@ const getPaymentMethodNameByKey = (key) => {
 };
 
 const getEmailFormatForPackageExpiry = (name, userid, vlan, date) => {
-  return `<!DOCTYPE html><html><body><div style="display:flex; flex-direction:column; align-items:center; justify-content:'center'; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
-  <div style="width:100%; height:80px; margin: 10px 10px 0px 10px; display:flex; align-items:center; justify-content: space-between">
-    <img src="../assets/logo1.png" alt="Logo" style="width:50px; height:40px; margin-left:20px"/>
-     <h2 style="margin-right: 20px">New Package</h2>
-  </div>
-  <div  style="width:100%; height:1px; background-color:gray"></div>
-  <div style="width:100%; height:auto; margin: 20px 40px 20px 40px;">
-    <p style="margin: 20px 20px 20px 20px; font-size:20px; line-height:25px">Dear ${name}, Your User ID ${userid} VLAN-${vlan} Will Expire On ${date}. For Next Recharge Call 03005592282 (Whatsapp-only)</p>
-  </div>
-  <div  style="width:100%; height:1px; background-color:gray"></div>
-  <div style="margin-top:10px; width:100%; height:autopx; display:flex; flex-direction:column; align-items:center; justify-content:center">
-    <img src="../assets/logo1.png" 	alt="Logo" style="width:70px; height:50px"/>
-     <h4>Copyright &copy; 2023 Connect Communications Lodhran</h4>
-     <a href="https://www.connectcommunicationsLodhran.com" target="blank">ConnectCommunicationsLodhran.Com</a>
-  </div>
- </div></body></html>`;
+  return `<!DOCTYPE html>
+  <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <title></title>
+    <style>
+      table, td, div, h1, p {font-family: Arial, sans-serif;}
+    </style>
+  </head>
+  <body style="margin:0;padding:0;">
+    <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
+      <tr>
+        <td align="center" style="padding:0;">
+          <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
+            <tr>
+              <td align="center" style="padding:40px 0 30px 0;background:#70bbd9;">
+                <img src="https://www.connect.net.pk/images/logo/connect-logo-original.png" alt="" width="300" style="height:auto;display:block;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:36px 30px 42px 30px;">
+                <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
+                  <tr>
+                    <td style="padding:0 0 36px 0;color:#153643;">
+                      <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Package Expiry</h1>
+                      <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Dear ${name}, Your User ID <span style="font-weight:bold">${userid}</span> VLAN-${vlan} Will Expire On ${date}. For Next Recharge Call 03005592282 (Whatsapp-only).</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:30px;background:#ee4c50;">
+                <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;font-size:9px;font-family:Arial,sans-serif;">
+                  <tr>
+                    <td style="padding:0;width:50%;" align="left">
+                      <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;">
+                        &copy; Connect Communication Lodrhan ${new Date().getFullYear()}<br/><a href="https://www.connectcommunicationsLodhran.com" target="blank" style="color:#ffffff;text-decoration:underline;">Visit Our Website</a>
+                      </p>
+                    </td>
+                    <td style="padding:0;width:50%;" align="right">
+                      <table role="presentation" style="border-collapse:collapse;border:0;border-spacing:0;">
+                        <tr>
+                          <td style="padding:0 0 0 10px;width:38px;">
+                            <a href="http://www.twitter.com/" style="color:#ffffff;"><img src="https://www.connect.net.pk/images/logo/connect-logo-original.png" alt="Twitter" width="200" height="50" style="height:auto;display:block;border:0;" /></a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+  </html>`;
 };
 
 const getTomorrowDate = () => {

@@ -1,5 +1,10 @@
 const httpStatus = require("http-status");
-const { EntryModel, InvoiceModel, ExpenseModel } = require("../../models");
+const {
+  EntryModel,
+  InvoiceModel,
+  ExpenseModel,
+  StaffModel,
+} = require("../../models");
 const { ispService } = require("../../services");
 const ApiError = require("../../utils/ApiError");
 let summaryService = {};
@@ -43,7 +48,7 @@ summaryService.getCompanyExpense = async (dateFrom, dateTo) => {
   return data.reduce((acc, item) => (acc += +item?.amount), 0);
 };
 
-summaryService.getPartnerEpxense = async (dateFrom, dateTo) => {
+summaryService.getPartnersTotalEpxense = async (dateFrom, dateTo) => {
   const data = await ExpenseModel.find({
     spentBy: { $ne: "company" },
     date: {
@@ -52,6 +57,42 @@ summaryService.getPartnerEpxense = async (dateFrom, dateTo) => {
     },
   });
   return data.reduce((acc, item) => (acc += +item?.amount), 0);
+};
+
+summaryService.getPartnersEpxenses = async (
+  dateFrom,
+  dateTo,
+  companyProfit
+) => {
+  const partners = await StaffModel.find({
+    type: { $in: ["partner", "superadmin"] },
+  });
+
+  const data = Promise.all(
+    partners.map(async (partner) => {
+      const expense = await ExpenseModel.find({
+        spentBy: partner.id,
+        date: {
+          $gte: new Date(dateFrom),
+          $lte: new Date(dateTo),
+        },
+      });
+      const partnerExpense = expense.reduce(
+        (acc, item) => (acc += +item.amount),
+        0
+      );
+      const partnerProfit = (companyProfit * partner.share) / 100;
+      return {
+        partnerId: partner.id,
+        fullname: partner.fullname,
+        expense: partnerExpense,
+        profit: partnerProfit,
+        remainingProfit: partnerProfit - partnerExpense,
+      };
+    })
+  );
+
+  return data;
 };
 
 async function getTotalInvoice(isp, dateFrom, dateTo) {
