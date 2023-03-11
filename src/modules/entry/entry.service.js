@@ -1,6 +1,8 @@
 const httpStatus = require("http-status");
 const EntryModel = require("./entry.model");
 const ApiError = require("../../utils/ApiError");
+const { getTomorrowDate } = require("../../utils/helpers");
+const { userService } = require("../../services");
 let entryService = {};
 
 /**
@@ -24,7 +26,7 @@ entryService.getAlCompletedlEntries = async (startDate, endDate, isp) => {
     isp,
     entryDate:
       endDate === "" || startDate === endDate
-        ? new Date(startDate) 
+        ? new Date(startDate)
         : { $gte: new Date(startDate), $lte: new Date(endDate) },
   })
     .populate("isp")
@@ -59,6 +61,26 @@ entryService.getEntryById = async (id) => {
 entryService.updateEntryById = async (id, updateBody) => {
   await EntryModel.updateOne({ _id: id }, updateBody);
   return "Entry Updated";
+};
+
+entryService.getEntriesToExpireTomorrow = async () => {
+  const entries = await EntryModel.find({
+    expiryDate: new Date(getTomorrowDate()),
+  })
+    .populate("package")
+    .populate("isp");
+
+  const entriesToExpire = Promise.all(
+    entries.map(async (item) => {
+      const user = await userService.getUserByUserId(item.userId);
+      return {
+        entry: item,
+        user,
+      };
+    })
+  );
+
+  return entriesToExpire;
 };
 
 // /**

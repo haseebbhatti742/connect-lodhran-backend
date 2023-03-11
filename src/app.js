@@ -12,6 +12,7 @@ const cron = require("node-cron");
 const moment = require("moment");
 const ApiError = require("./utils/ApiError");
 const { sendEmail } = require("./services/email.service");
+const summaryController = require("./modules/summary/summary.controller");
 
 const app = express();
 
@@ -47,18 +48,8 @@ app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 
-cron.schedule("0 16 * * *", () => {
-  sendEmail(
-    "haseebbhatti742@gmail.com",
-    "Scheduled Email from Connect Communication lodhran",
-    "This Scheduled Email from Connect Communication lodhran"
-  );
-
-  sendEmail(
-    "sheikhzain01@gmail.com",
-    "Scheduled Email from Connect Communication lodhran",
-    "This Scheduled Email from Connect Communication lodhran"
-  );
+cron.schedule("0 47 18 * * *", () => {
+  summaryController.sendEmailsForTomorrowExpiry();
 });
 
 // convert error to ApiError, if needed
